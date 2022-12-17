@@ -1,0 +1,544 @@
+openapi: 3.0.0
+info:
+  description: This is of the peoples API.
+  version: 2022-03-05T04:04:29Z
+  title: People
+paths:
+  /peoples:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Peoples"
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-g/invocations
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.querystring.page: method.request.querystring.page
+          integration.request.querystring.limit: method.request.querystring.limit
+          integration.request.querystring.search: method.request.querystring.search
+          integration.request.querystring.tags: method.request.querystring.tags
+        requestTemplates:
+          application/json: |-
+            {
+                "page" : "$input.params('page')",
+                "limit" : "$input.params('limit')",
+                "search" : "$input.params('search')",
+                "tags" : "$input.params('tags')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/People"
+      responses:
+        "201":
+          description: 201 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/People"
+      security:
+        - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-po/invocations
+        responses:
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    options:
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Securit\
+                y-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  /peoples/bookmarklet:
+    get:
+      parameters:
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: url
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: key
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/people"
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:007596076917:function:m-s-peoplesbookmarklet-g/invocations
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.querystring.url: method.request.querystring.url
+          integration.request.querystring.key: method.request.querystring.key
+          integration.request.querystring.name: method.request.querystring.name
+          integration.request.querystring.description: method.request.querystring.description
+        requestTemplates:
+          application/json: |-
+            {
+                "name" : "$input.params('name')",
+                "description" : "$input.params('description')",
+                "url" : "$input.params('url')",
+                "key" : "$input.params('key')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT           
+  "/peoples/{people_id}":
+    get:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/People"
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-g/invocations
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    put:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/People"
+      responses:
+        "204":
+          description: 204 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      security:
+        - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-pu/invocations
+        responses:
+          default:
+            statusCode: "204"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')",
+                "body" : $input.json('$') 
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    delete:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 204 response
+      security:
+        - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-d/invocations
+        responses:
+          default:
+            statusCode: "204"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    options:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,OPTIONS,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Securit\
+                y-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/peoples/{people_id}/tags":
+    get:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/People"
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-tags-g/invocations
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    post:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/People"
+      responses:
+        "201":
+          description: 201 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      security:
+        - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-tags-po/invocations
+        responses:
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')",
+                "tag_id" : "$input.json('$.tag_id')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    options:
+      parameters:
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/People"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Securit\
+                y-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+  "/peoples/{people_id}/tags/{tag_id}":
+    delete:
+      parameters:
+        - name: tag_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 204 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      security:
+        - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:780401591112:function:m-s-peoples-people-tags-tag-d/invocations
+        responses:
+          default:
+            statusCode: "204"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestParameters:
+          integration.request.path.people_id: method.request.path.people_id
+          integration.request.path.tag_id: method.request.path.tag_id
+        requestTemplates:
+          application/json: |-
+            {
+                "people_id" : "$input.params('people_id')",
+                "tag_id" : "$input.params('tag_id')"
+            }
+        passthroughBehavior: when_no_templates
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+    options:
+      parameters:
+        - name: tag_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: people_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/People"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Securit\
+                y-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        passthroughBehavior: when_no_match
+        type: mock
+servers:
+  - url: https://nvrkuhfds2.execute-api.us-west-1.amazonaws.com/staging
+components:
+  requestBodies:
+    People:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/People"
+      required: true
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+  schemas:
+    Empty:
+      type: object
+      title: Empty Schema
+    People:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+    Peoples:
+      type: array
+      items:
+        $ref: "#/components/schemas/People"
